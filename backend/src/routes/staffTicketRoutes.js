@@ -1,15 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-const { verifyStaffId } = require("../middleware/verifyStaffId");
+const { verifyUserId } = require("../middleware/verifyUserId");
 const controller = require("../controllers/staffTicketsController");
 
-router.get("/:staffId/tickets", verifyStaffId, controller.geSttaffTickets);
-router.get("/:staffId/tickets/:id/take", verifyStaffId, controller.takeTicket);
-router.get(
-  "/:staffId/tickets/:id/close",
-  verifyStaffId,
-  controller.closeTicket
-);
+router.get("/:userId/tickets", verifyUserId, controller.geSttaffTickets);
+router.get("/:userId/tickets/:id/take", verifyUserId, controller.takeTicket);
+router.get("/:userId/tickets/:id/close", verifyUserId, controller.closeTicket);
 
 module.exports = router;

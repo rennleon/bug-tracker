@@ -1,20 +1,18 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  getUserTickets,
-  getUserTicketById,
-  createUserTicket,
-  updateUserTicket,
-  deleteUserTicket,
-} = require("../controllers/userTicketsController");
+const controller = require("../controllers/userTicketsController");
+const { verifyUserId } = require("../middleware/verifyUserId");
 
-router.route("/:userId/tickets").get(getUserTickets).post(createUserTicket);
+router
+  .route("/:userId/tickets")
+  .get(verifyUserId, controller.getUserTickets)
+  .post(verifyUserId, controller.createUserTicket);
 
 router
   .route("/:userId/tickets/:id")
-  .get(getUserTicketById)
-  .put(updateUserTicket)
-  .delete(deleteUserTicket);
+  .get(verifyUserId, controller.getUserTicketById)
+  .put(verifyUserId, controller.updateUserTicket)
+  .delete(verifyUserId, controller.deleteUserTicket);
 
 module.exports = router;
