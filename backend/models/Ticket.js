@@ -9,6 +9,10 @@ const ticketSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId(),
     required: false,
   },
+  content: {
+    type: String,
+    required: true,
+  },
   status: {
     type: String,
     default: "UNASSIGNED", // ASSIGNED | UNASSIGNED | CLOSED
