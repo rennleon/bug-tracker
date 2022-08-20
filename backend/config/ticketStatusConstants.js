@@ -1,0 +1,7 @@
+const TICKET_STATUS = {
+  ASSIGNED: "ASSIGNED",
+  UNASSIGNED: "UNASSIGNED",
+  CLOSED: "CLOSED",
+};
+
+module.exports = TICKET_STATUS;
