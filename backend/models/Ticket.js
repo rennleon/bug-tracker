@@ -1,4 +1,4 @@
-const mongoose = require("schema");
+const mongoose = require("mongoose");
 
 const ticketSchema = new mongoose.Schema({
   user: {
