@@ -18,7 +18,7 @@ server.use(cors(corsOptions));
 server.use(express.json());
 
 // Parse Form Data
-server.use(express.urlencoded());
+server.use(express.urlencoded({ extended: false }));
 
 // API Routes
 server.use("/api", apiRoutes);
