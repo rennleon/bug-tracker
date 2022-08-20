@@ -9,6 +9,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  refreshToken: {
+    type: String,
+    required: false,
+    default: "",
+  },
   roles: {
     type: [String],
     default: ["USER"],
