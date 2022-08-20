@@ -5,7 +5,7 @@ const User = require("../models/User");
 const getAllUsers = async (req = request, res = response) => {
   const users = await User.find({}).exec();
   if (!users || users.length === 0) {
-    return res.status(204).json({ messsage: "No content available" });
+    return res.sendStatus(204);
   }
   res.json(users);
 };
@@ -24,6 +24,9 @@ const createUser = async (req = request, res = response) => {
     return res
       .status(400)
       .json({ message: "user and password are both required" });
+
+  const foundUser = await User.findOne({ user }).exec();
+  if (foundUser) return res.sendStatus(409);
 
   try {
     const encrypted = await bcrypt.hash(password, 10);
@@ -50,7 +53,7 @@ const updateUser = async (req = request, res = response) => {
       .json({ message: `User ${foundUser.user} updated successfully` });
   }
 
-  res.sendStatus(200);
+  res.sendStatus(204);
 };
 
 const deleteUser = async (req = request, res = response) => {
