@@ -35,7 +35,7 @@ const createUser = async (req = request, res = response) => {
       password: encrypted,
     });
     res.status(201).json(newUser);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json(err.message);
   }
 };

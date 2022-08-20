@@ -30,7 +30,7 @@ const createTicket = async (req = request, res = response) => {
       content,
     });
     res.status(201).json(newTicket);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json(err.message);
   }
 };
