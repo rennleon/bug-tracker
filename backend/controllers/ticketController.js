@@ -1,5 +1,4 @@
 const { request, response } = require("express");
-const bcrypt = require("bcrypt");
 const Ticket = require("../models/Ticket");
 
 const getAllTickets = async (req = request, res = response) => {
@@ -60,7 +59,7 @@ const deleteTicket = async (req = request, res = response) => {
 };
 
 module.exports = {
-  getAllUsers,
+  getAllTickets,
   getTicketById,
   createTicket,
   updateTicket,
