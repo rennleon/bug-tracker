@@ -2,7 +2,7 @@ const { request, response } = require("express");
 const { verifyAccessToken } = require("../utils/tokens");
 
 const verifyJWT = async (req = request, res = response, next) => {
-  const authHeaders = req.headers?.authorization || !req.headers?.Authorization;
+  const authHeaders = req.headers?.authorization || req.headers?.Authorization;
   if (!authHeaders?.startsWith("Bearer ")) return res.sendStatus(401);
 
   try {
