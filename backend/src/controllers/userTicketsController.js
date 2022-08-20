@@ -4,10 +4,7 @@ const Ticket = require("../models/Ticket");
 
 const getUserTickets = async (req = request, res = response) => {
   try {
-    const user = await User.findById(req.params.userId).exec();
-    if (!user) return res.sendStatus(404);
-
-    const tickets = await Ticket.find({ userId: user._id }).exec();
+    const tickets = await Ticket.find({ userId: req.userId }).exec();
     if (!tickets || tickets.length === 0) return res.sendStatus(204);
 
     res.json(tickets);
@@ -19,12 +16,9 @@ const getUserTickets = async (req = request, res = response) => {
 
 const getUserTicketById = async (req = request, res = response) => {
   try {
-    const user = await User.findById(req.params.userId).exec();
-    if (!user) return res.sendStatus(404);
-
     const ticket = await Ticket.findOne({
       _id: req.params.id,
-      userId: user._id,
+      userId: req.userId,
     }).exec();
 
     if (!ticket) {
@@ -40,15 +34,12 @@ const getUserTicketById = async (req = request, res = response) => {
 
 const createUserTicket = async (req = request, res = response) => {
   try {
-    const user = await User.findById(req.params.userId).exec();
-    if (!user) return res.sendStatus(404);
-
     const { content } = req.body;
     if (!content?.trim())
       return res.status(400).json({ message: "content is required" });
 
     const newTicket = await Ticket.create({
-      userId: user._id,
+      userId: req.userId,
       content,
     });
     res.status(201).json(newTicket);
@@ -60,14 +51,11 @@ const createUserTicket = async (req = request, res = response) => {
 
 const updateUserTicket = async (req = request, res = response) => {
   try {
-    const user = await User.findById(req.params.userId).exec();
-    if (!user) return res.sendStatus(404);
-
     const foundTicket = await Ticket.findOne({
       _id: req.params.id,
-      userId: user._id,
+      userId: req.userId,
     }).exec();
-    if (!foundTicket) return res.status(404).json({ message: "404 Not Found" });
+    if (!foundTicket) return res.sendStatus(404);
 
     if (!req.body?.content)
       return res.status(400).json({ message: "content is required" });
@@ -85,14 +73,11 @@ const updateUserTicket = async (req = request, res = response) => {
 
 const deleteUserTicket = async (req = request, res = response) => {
   try {
-    const user = await User.findById(req.params.userId).exec();
-    if (!user) return res.sendStatus(404);
-
     const foundTicket = await Ticket.find({
       _id: req.params.id,
-      userId: user._id,
+      userId: req.userId,
     }).exec();
-    if (!foundTicket) return res.status(404).json({ message: "404 Not Found" });
+    if (!foundTicket) return res.sendStatus(404);
 
     await foundTicket.delete();
     res.sendStatus(204);
