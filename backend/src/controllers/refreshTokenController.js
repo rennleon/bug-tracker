@@ -10,8 +10,8 @@ const handleRefreshToken = async (req = request, res = response) => {
     const refreshToken = cookies.jwt;
     const { user: userId } = await verifyRefreshToken(refreshToken);
 
-    const foundUser = await User.findById({ userId }).exec();
-    if (!foundUser) return res.sendStatus(401);
+    const foundUser = await User.findOne({ refreshToken }).exec();
+    if (!foundUser || foundUser._id !== userId) return res.sendStatus(401);
 
     const accessToken = generateAccessToken(foundUser);
     res.json({ accessToken });
