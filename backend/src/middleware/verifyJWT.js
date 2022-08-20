@@ -16,7 +16,7 @@ const verifyJWT = async (req = request, res = response, next) => {
     };
 
     next();
-  } catch (error) {
+  } catch (err) {
     console.error(err);
     res.sendStatus(401);
   }
