@@ -6,15 +6,17 @@ const getUserTickets = async (req = request, res = response) => {
   const user = await User.findById(req.params.userId).exec();
   if (!user) return res.sendStatus(404);
 
-  user.tickets = await Ticket.find({ userId: user.id }).exec();
-  res.json(user);
+  const tickets = await Ticket.find({ userId: user._id }).exec();
+  if (!tickets || tickets.length === 0) return res.sendStatus(204);
+
+  res.json(tickets);
 };
 
 const getUserTicketById = async (req = request, res = response) => {
   const user = await User.findById(req.params.userId).exec();
   if (!user) return res.sendStatus(404);
 
-  const ticket = await Ticket.find({
+  const ticket = await Ticket.findOne({
     _id: req.params.id,
     userId: user._id,
   }).exec();
@@ -49,7 +51,7 @@ const updateUserTicket = async (req = request, res = response) => {
   const user = await User.findById(req.params.userId).exec();
   if (!user) return res.sendStatus(404);
 
-  const foundTicket = await Ticket.find({
+  const foundTicket = await Ticket.findOne({
     _id: req.params.id,
     userId: user._id,
   }).exec();
