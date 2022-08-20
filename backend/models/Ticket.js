@@ -19,7 +19,11 @@ const ticketSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: new Date(),
+    default: new Date().toISOString(),
+  },
+  closedAt: {
+    type: Date,
+    required: false,
   },
 });
 
