@@ -9,10 +9,10 @@ const {
   deleteUserTicket,
 } = require("../controllers/userTicketsController");
 
-router.route("/").get(getUserTickets).post(createUserTicket);
+router.route("/:userId/tickets").get(getUserTickets).post(createUserTicket);
 
 router
-  .route("/:id")
+  .route("/:userId/tickets/:id")
   .get(getUserTicketById)
   .put(updateUserTicket)
   .delete(deleteUserTicket);

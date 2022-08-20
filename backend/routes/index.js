@@ -6,7 +6,7 @@ const ticketRoutes = require("./ticketRoutes");
 const userTicketRoutes = require("./userTicketRoutes");
 
 router.use("/users", userRoutes);
+router.use("/users", userTicketRoutes);
 router.use("/tickets", ticketRoutes);
-router.use("/users/:userId/tickets", userTicketRoutes);
 
 module.exports = router;
