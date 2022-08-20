@@ -9,7 +9,8 @@ const geSttaffTickets = async (req = request, res = response) => {
 
     res.json(tickets);
   } catch (err) {
-    res.status(500).json({ meesage: err.message });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
@@ -27,7 +28,8 @@ const takeTicket = async (req = request, res = response) => {
 
     res.sendStatus(200);
   } catch (err) {
-    res.status(500).json({ meesage: err.message });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
@@ -48,7 +50,8 @@ const closeTicket = async (req = request, res = response) => {
 
     res.sendStatus(200);
   } catch (err) {
-    res.status(500).json({ meesage: err.message });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
