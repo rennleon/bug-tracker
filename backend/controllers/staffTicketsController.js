@@ -46,7 +46,7 @@ const closeTicket = async (req = request, res = response) => {
     foundTicket.closedAt = new Date().toISOString();
     await foundTicket.save();
 
-    res.json(ticket);
+    res.sendStatus(200);
   } catch (err) {
     res.status(500).json({ meesage: err.message });
   }
