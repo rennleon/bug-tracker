@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
 const ticketSchema = new mongoose.Schema({
-  user: {
+  userId: {
     type: mongoose.Types.ObjectId,
     required: true,
   },
-  staff: {
+  staffId: {
     type: mongoose.Types.ObjectId,
     required: false,
   },
