@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const ticketSchema = new mongoose.Schema({
   user: {
-    type: mongoose.Types.ObjectId(),
+    type: mongoose.Types.ObjectId,
     required: true,
   },
   staff: {
-    type: mongoose.Types.ObjectId(),
+    type: mongoose.Types.ObjectId,
     required: false,
   },
   content: {
