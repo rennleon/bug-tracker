@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
+const USER_ROLES = require("../config/rolesConstants");
+
 const verifyJWT = require("../middleware/verifyJWT");
+const roleAcess = require("../middleware/verifyRoleAccess");
 
 const authRoutes = require("./authRoutes");
 
@@ -27,9 +30,11 @@ router.use(verifyJWT);
 
 // Protected routes
 // PENDING: VERIFY ROLES ...
-router.use("/users", userRoutes); // access by ADMIN
-router.use("/users", userTicketRoutes); // access by USER
-router.use("/staff", staffTicketRoutes); // access by STAFF
-router.use("/tickets", ticketRoutes); // access by USER
+router.use("/users", roleAcess([USER_ROLES.ADMIN]), userRoutes); // access by ADMIN
+router.use("/tickets", roleAcess([USER_ROLES.ADMIN]), ticketRoutes); // access by USER
+
+// Mixed Routes
+router.use("/users", roleAcess([USER_ROLES.USER]), userTicketRoutes); // access by USER
+router.use("/staff", roleAcess([USER_ROLES.STAFF]), staffTicketRoutes); // access by STAFF
 
 module.exports = router;
