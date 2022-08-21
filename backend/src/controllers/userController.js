@@ -2,6 +2,8 @@ const { request, response } = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 
+const USER_ROLES = require("../config/rolesConstants");
+
 const getAllUsers = async (req = request, res = response) => {
   try {
     const users = await User.find({}).exec();
@@ -30,7 +32,7 @@ const getUserById = async (req = request, res = response) => {
 
 const createUser = async (req = request, res = response) => {
   try {
-    const { user, password } = req.body;
+    const { user, password, roles = [USER_ROLES.USER] } = req.body;
     if (!user?.trim() || !password?.trim())
       return res
         .status(400)
@@ -40,9 +42,12 @@ const createUser = async (req = request, res = response) => {
     if (foundUser) return res.sendStatus(409);
 
     const encrypted = await bcrypt.hash(password, 10);
+    const allowedRoles = roles.filter((roleName) => !!USER_ROLES[roleName]);
+
     const newUser = await User.create({
       user,
       password: encrypted,
+      roles: allowedRoles,
     });
     res.status(201).json(newUser);
   } catch (err) {
