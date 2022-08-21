@@ -22,7 +22,7 @@ const updateProfile = async (req = request, res = response) => {
     if (!user?.trim() && !password?.trim())
       return res
         .status(400)
-        .json({ message: "either user, password or roles should be set" });
+        .json({ message: "either user or password should be set" });
 
     if (user) {
       foundUser.user = user.trim();
