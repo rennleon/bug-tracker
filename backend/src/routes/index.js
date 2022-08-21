@@ -29,12 +29,11 @@ router.use(verifyJWT);
  */
 
 // Protected routes
-// PENDING: VERIFY ROLES ...
-router.use("/users", roleAcess([USER_ROLES.ADMIN]), userRoutes); // access by ADMIN
-router.use("/tickets", roleAcess([USER_ROLES.ADMIN]), ticketRoutes); // access by USER
+router.use("/users", roleAcess([USER_ROLES.ADMIN]), userRoutes);
+router.use("/tickets", roleAcess([USER_ROLES.ADMIN]), ticketRoutes);
 
 // Mixed Routes
-router.use("/users", roleAcess([USER_ROLES.USER]), userTicketRoutes); // access by USER
-router.use("/staff", roleAcess([USER_ROLES.STAFF]), staffTicketRoutes); // access by STAFF
+router.use("/users", roleAcess([USER_ROLES.USER]), userTicketRoutes);
+router.use("/staff", roleAcess([USER_ROLES.STAFF]), staffTicketRoutes);
 
 module.exports = router;
