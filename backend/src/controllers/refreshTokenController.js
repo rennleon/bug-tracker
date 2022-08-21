@@ -1,6 +1,6 @@
 const { request, response } = require("express");
 const User = require("../models/User");
-const { generateAccessToken } = require("../utils/tokens");
+const { generateAccessToken, verifyRefreshToken } = require("../utils/tokens");
 
 const handleRefreshToken = async (req = request, res = response) => {
   const cookies = req.cookies;
@@ -11,7 +11,7 @@ const handleRefreshToken = async (req = request, res = response) => {
     const { user: userId } = await verifyRefreshToken(refreshToken);
 
     const foundUser = await User.findOne({ refreshToken }).exec();
-    if (!foundUser || foundUser._id !== userId) return res.sendStatus(401);
+    if (!foundUser || `${foundUser._id}` !== userId) return res.sendStatus(401);
 
     const accessToken = generateAccessToken(foundUser);
     res.json({ accessToken });
