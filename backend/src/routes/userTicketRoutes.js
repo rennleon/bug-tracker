@@ -2,17 +2,19 @@ const express = require("express");
 const router = express.Router();
 
 const controller = require("../controllers/userTicketsController");
-const { verifyUserId } = require("../middleware/verifyUserId");
+const { verifyUserExists } = require("../middleware/verifyUserExists");
+
+router.use(verifyUserExists);
 
 router
   .route("/:userId/tickets")
-  .get(verifyUserId, controller.getUserTickets)
-  .post(verifyUserId, controller.createUserTicket);
+  .get(controller.getUserTickets)
+  .post(controller.createUserTicket);
 
 router
   .route("/:userId/tickets/:id")
-  .get(verifyUserId, controller.getUserTicketById)
-  .put(verifyUserId, controller.updateUserTicket)
-  .delete(verifyUserId, controller.deleteUserTicket);
+  .get(controller.getUserTicketById)
+  .put(controller.updateUserTicket)
+  .delete(controller.deleteUserTicket);
 
 module.exports = router;

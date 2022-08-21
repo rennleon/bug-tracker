@@ -16,6 +16,15 @@ router.use("/auth", authRoutes);
 // Auth middleware
 router.use(verifyJWT);
 
+/**
+ * The following routes has request with user prop on it
+ *
+ * req.user = {
+ *  id: userId,
+ *  roles,
+ * };
+ */
+
 // Protected routes
 // PENDING: VERIFY ROLES ...
 router.use("/users", userRoutes);
