@@ -27,61 +27,7 @@ const getTicketById = async (req = request, res = response) => {
   }
 };
 
-const createTicket = async (req = request, res = response) => {
-  const { userId, content } = req.body;
-  if (!userId?.trim() || !content?.trim())
-    return res
-      .status(400)
-      .json({ message: "userId and content are both required" });
-
-  try {
-    const newTicket = await Ticket.create({
-      userId,
-      content,
-    });
-    res.status(201).json(newTicket);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
-  }
-};
-
-const updateTicket = async (req = request, res = response) => {
-  try {
-    const foundTicket = await Ticket.findById(req.params.id).exec();
-    if (!foundTicket) return res.status(404).json({ message: "404 Not Found" });
-
-    if (req.body?.content) {
-      foundTicket.content = req.body.content;
-      await foundTicket.save();
-      return res.status(200).json({
-        message: `Ticket with id ${foundTicket._id} was updated successfully`,
-      });
-    }
-    res.sendStatus(204);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
-  }
-};
-
-const deleteTicket = async (req = request, res = response) => {
-  try {
-    const foundTicket = await Ticket.findById(req.params.id).exec();
-    if (!foundTicket) return res.status(404).json({ message: "404 Not Found" });
-
-    await foundTicket.delete();
-    res.sendStatus(204);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
-  }
-};
-
 module.exports = {
   getAllTickets,
   getTicketById,
-  createTicket,
-  updateTicket,
-  deleteTicket,
 };
