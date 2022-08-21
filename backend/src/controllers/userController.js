@@ -9,7 +9,7 @@ const { getAllowedRoles } = require("../utils/userRoles");
 
 const getAllUsers = async (req = request, res = response) => {
   try {
-    const users = await User.find({}).exec();
+    const users = await User.find({}).nor({ _id: req.user.id }).exec();
     if (!users || users.length === 0) {
       return res.sendStatus(204);
     }
@@ -64,6 +64,8 @@ const createUser = async (req = request, res = response) => {
 
 const updateUser = async (req = request, res = response) => {
   try {
+    if (req.user.id === req.params.id) return res.sendStatus(401);
+
     const foundUser = await User.findById(req.params.id).exec();
     if (!foundUser) return res.sendStatus(404);
 
@@ -77,9 +79,7 @@ const updateUser = async (req = request, res = response) => {
     foundUser.roles = allowedRoles;
     await foundUser.save();
 
-    return res
-      .status(200)
-      .json({ message: `User ${foundUser.user} updated successfully` });
+    return res.status(200).json(foundUser);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
