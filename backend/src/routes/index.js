@@ -27,9 +27,9 @@ router.use(verifyJWT);
 
 // Protected routes
 // PENDING: VERIFY ROLES ...
-router.use("/users", userRoutes);
-router.use("/users", userTicketRoutes);
-router.use("/staff", staffTicketRoutes);
-router.use("/tickets", ticketRoutes);
+router.use("/users", userRoutes); // access by ADMIN
+router.use("/users", userTicketRoutes); // access by USER
+router.use("/staff", staffTicketRoutes); // access by STAFF
+router.use("/tickets", ticketRoutes); // access by USER
 
 module.exports = router;
