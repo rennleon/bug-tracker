@@ -4,7 +4,7 @@ const Ticket = require("../models/Ticket");
 
 const getUserTickets = async (req = request, res = response) => {
   try {
-    const tickets = await Ticket.find({ userId: req.userId }).exec();
+    const tickets = await Ticket.find({ userId: req.user.id }).exec();
     if (!tickets || tickets.length === 0) return res.sendStatus(204);
 
     res.json(tickets);
@@ -18,7 +18,7 @@ const getUserTicketById = async (req = request, res = response) => {
   try {
     const ticket = await Ticket.findOne({
       _id: req.params.id,
-      userId: req.userId,
+      userId: req.user.id,
     }).exec();
 
     if (!ticket) {
@@ -39,7 +39,7 @@ const createUserTicket = async (req = request, res = response) => {
       return res.status(400).json({ message: "content is required" });
 
     const newTicket = await Ticket.create({
-      userId: req.userId,
+      userId: req.user.id,
       content,
     });
     res.status(201).json(newTicket);
@@ -53,7 +53,7 @@ const updateUserTicket = async (req = request, res = response) => {
   try {
     const foundTicket = await Ticket.findOne({
       _id: req.params.id,
-      userId: req.userId,
+      userId: req.user.id,
     }).exec();
     if (!foundTicket) return res.sendStatus(404);
 
@@ -75,7 +75,7 @@ const deleteUserTicket = async (req = request, res = response) => {
   try {
     const foundTicket = await Ticket.find({
       _id: req.params.id,
-      userId: req.userId,
+      userId: req.user.id,
     }).exec();
     if (!foundTicket) return res.sendStatus(404);
 
