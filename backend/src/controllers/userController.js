@@ -4,6 +4,9 @@ const User = require("../models/User");
 
 const USER_ROLES = require("../config/rolesConstants");
 
+const getAllowedRoles = (roles = [USER_ROLES.USER]) =>
+  roles.filter((roleName) => !!USER_ROLES[roleName]);
+
 const getAllUsers = async (req = request, res = response) => {
   try {
     const users = await User.find({}).exec();
@@ -42,7 +45,7 @@ const createUser = async (req = request, res = response) => {
     if (foundUser) return res.sendStatus(409);
 
     const encrypted = await bcrypt.hash(password, 10);
-    const allowedRoles = roles.filter((roleName) => !!USER_ROLES[roleName]);
+    const allowedRoles = getAllowedRoles(roles);
 
     const newUser = await User.create({
       user,
@@ -61,16 +64,17 @@ const updateUser = async (req = request, res = response) => {
     const foundUser = await User.findById(req.params.id).exec();
     if (!foundUser) return res.status(404).json({ message: "404 Not Found" });
 
-    if (req.body.password) {
-      const encrypted = await bcrypt.hash(req.body.password, 10);
-      foundUser.password = encrypted;
-      await foundUser.save();
-      return res
-        .status(200)
-        .json({ message: `User ${foundUser.user} updated successfully` });
+    const { roles } = req.body;
+    if (!roles) return res.status(400).json({ message: "received empty body" });
+
+    if (roles) {
+      foundUser.roles = getAllowedRoles(roles);
     }
 
-    res.sendStatus(204);
+    await foundUser.save();
+    return res
+      .status(200)
+      .json({ message: `User ${foundUser.user} updated successfully` });
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
