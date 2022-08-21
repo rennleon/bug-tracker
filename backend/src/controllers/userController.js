@@ -22,6 +22,8 @@ const getAllUsers = async (req = request, res = response) => {
 
 const getUserById = async (req = request, res = response) => {
   try {
+    if (req.user.id === req.params.id) return res.sendStatus(403);
+
     const user = await User.findById(req.params.id).exec();
     if (!user) {
       return res.sendStatus(404);
@@ -64,7 +66,7 @@ const createUser = async (req = request, res = response) => {
 
 const updateUser = async (req = request, res = response) => {
   try {
-    if (req.user.id === req.params.id) return res.sendStatus(401);
+    if (req.user.id === req.params.id) return res.sendStatus(403);
 
     const foundUser = await User.findById(req.params.id).exec();
     if (!foundUser) return res.sendStatus(404);
@@ -88,6 +90,8 @@ const updateUser = async (req = request, res = response) => {
 
 const deleteUser = async (req = request, res = response) => {
   try {
+    if (req.user.id === req.params.id) return res.sendStatus(403);
+
     const foundUser = await User.findById(req.params.id).exec();
     if (!foundUser) return res.status(404).json({ message: "404 Not Found" });
 
