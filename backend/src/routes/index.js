@@ -3,8 +3,7 @@ const router = express.Router();
 
 const verifyJWT = require("../middleware/verifyJWT");
 
-const loginRoutes = require("./loginRoutes");
-const refreshTokenRoutes = require("./refreshTokenRoutes");
+const authRoutes = require("./authRoutes");
 
 const userRoutes = require("./userRoutes");
 const ticketRoutes = require("./ticketRoutes");
@@ -12,8 +11,7 @@ const userTicketRoutes = require("./userTicketRoutes");
 const staffTicketRoutes = require("./staffTicketRoutes");
 
 // Public routes
-router.use("/login", loginRoutes);
-router.use("/refresh-token", refreshTokenRoutes);
+router.use("/auth", authRoutes);
 
 // Auth middleware
 router.use(verifyJWT);
