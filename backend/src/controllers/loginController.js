@@ -1,11 +1,11 @@
 const { request, response } = require("express");
-const bcrypt = require("bcrypt");
 
 const User = require("../models/User");
 const {
   generateAccessToken,
   generateRefreshToken,
 } = require("../utils/tokens");
+const { matchEncrypt } = require("../utils/encrypt");
 const JWT_REFRESH_COOKIE = require("../config/jwtCookie");
 
 const handleLogin = async (req = request, res = response) => {
@@ -16,7 +16,7 @@ const handleLogin = async (req = request, res = response) => {
   const foundUser = await User.findOne({ user }).exec();
   if (!foundUser) return res.sendStatus(401);
 
-  const match = await bcrypt.compare(password, foundUser.password);
+  const match = await matchEncrypt(password, foundUser.password);
   if (!match) return res.sendStatus(401);
 
   const accessToken = generateAccessToken(foundUser);
