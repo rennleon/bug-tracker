@@ -1,18 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-const verifyUserIdAccess = require("../middleware/verifyUserIdAccess");
 const controller = require("../controllers/userTicketsController");
 
 router
-  .route("/:userId/tickets")
-  .get(verifyUserIdAccess, controller.getUserTickets)
-  .post(verifyUserIdAccess, controller.createUserTicket);
+  .route("/my-tickets")
+  .get(controller.getUserTickets)
+  .post(controller.createUserTicket);
 
 router
-  .route("/:userId/tickets/:id")
-  .get(verifyUserIdAccess, controller.getUserTicketById)
-  .put(verifyUserIdAccess, controller.updateUserTicket)
-  .delete(verifyUserIdAccess, controller.deleteUserTicket);
+  .route("/my-tickets/:id")
+  .get(controller.getUserTicketById)
+  .put(controller.updateUserTicket)
+  .delete(controller.deleteUserTicket);
 
 module.exports = router;
