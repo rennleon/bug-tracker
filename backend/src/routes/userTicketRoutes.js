@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const verifyUserExists = require("../middleware/verifyUserExists");
 const controller = require("../controllers/userTicketsController");
-const { verifyUserExists } = require("../middleware/verifyUserExists");
 
 router.use(verifyUserExists);
 
