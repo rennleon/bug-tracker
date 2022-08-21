@@ -29,7 +29,11 @@ router.use("/users", roleAcess([USER_ROLES.ADMIN]), userRoutes);
 router.use("/tickets", roleAcess([USER_ROLES.ADMIN]), ticketRoutes);
 
 // Mixed Routes
-router.use("/users", roleAcess([USER_ROLES.USER]), userTicketRoutes);
-router.use("/staff", roleAcess([USER_ROLES.STAFF]), staffTicketRoutes);
+router.use("/user/my-tickets", roleAcess([USER_ROLES.USER]), userTicketRoutes);
+router.use(
+  "/staff/my-tickets",
+  roleAcess([USER_ROLES.STAFF]),
+  staffTicketRoutes
+);
 
 module.exports = router;
