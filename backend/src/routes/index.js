@@ -8,6 +8,8 @@ const roleAcess = require("../middleware/verifyRoleAccess");
 
 const authRoutes = require("./authRoutes");
 
+const profileRoutes = require("./profileRoutes");
+
 const userRoutes = require("./userRoutes");
 const ticketRoutes = require("./ticketRoutes");
 const userTicketRoutes = require("./userTicketRoutes");
@@ -27,6 +29,13 @@ router.use(verifyJWT);
 // Protected routes
 router.use("/users", roleAcess([USER_ROLES.ADMIN]), userRoutes);
 router.use("/tickets", roleAcess([USER_ROLES.ADMIN]), ticketRoutes);
+
+// Special routes
+router.use(
+  "/user-profile",
+  roleAcess([USER_ROLES.USER, USER_ROLES.USER]),
+  profileRoutes
+);
 
 // Mixed Routes
 router.use("/user/my-tickets", roleAcess([USER_ROLES.USER]), userTicketRoutes);
