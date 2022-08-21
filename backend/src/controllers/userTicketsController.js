@@ -1,6 +1,6 @@
 const { request, response } = require("express");
-const User = require("../models/User");
 const Ticket = require("../models/Ticket");
+const TICKET_STATUS = require("../config/ticketStatusConstants");
 
 const getUserTickets = async (req = request, res = response) => {
   try {
@@ -41,6 +41,7 @@ const createUserTicket = async (req = request, res = response) => {
     const newTicket = await Ticket.create({
       userId: req.user.id,
       content,
+      status: TICKET_STATUS.UNASSIGNED,
     });
     res.status(201).json(newTicket);
   } catch (err) {
@@ -73,7 +74,7 @@ const updateUserTicket = async (req = request, res = response) => {
 
 const deleteUserTicket = async (req = request, res = response) => {
   try {
-    const foundTicket = await Ticket.find({
+    const foundTicket = await Ticket.findOne({
       _id: req.params.id,
       userId: req.user.id,
     }).exec();
