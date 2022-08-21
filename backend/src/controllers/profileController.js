@@ -35,9 +35,7 @@ const updateProfile = async (req = request, res = response) => {
 
     await foundUser.save();
 
-    return res
-      .status(200)
-      .json({ message: `User ${foundUser.user} updated successfully` });
+    return res.status(200).json(foundUser);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
