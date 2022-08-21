@@ -11,4 +11,4 @@ const verifyUserExists = async (req = request, res = response, next) => {
   }
 };
 
-module.exports = { verifyUserExists };
+module.exports = verifyUserExists;
