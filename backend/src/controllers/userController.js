@@ -5,8 +5,7 @@ const { encrypt } = require("../utils/encrypt");
 const User = require("../models/User");
 const USER_ROLES = require("../config/rolesConstants");
 
-const getAllowedRoles = (roles = [USER_ROLES.USER]) =>
-  roles.filter((roleName) => !!USER_ROLES[roleName]);
+const { getAllowedRoles } = require("../utils/userRoles");
 
 const getAllUsers = async (req = request, res = response) => {
   try {
@@ -45,8 +44,11 @@ const createUser = async (req = request, res = response) => {
     const foundUser = await User.findOne({ user }).exec();
     if (foundUser) return res.sendStatus(409);
 
-    const encrypted = await encrypt(password);
     const allowedRoles = getAllowedRoles(roles);
+    if (allowedRoles.length === 0)
+      return res.status(400).json({ message: "invalid roles" });
+
+    const encrypted = await encrypt(password);
 
     const newUser = await User.create({
       user,
@@ -63,16 +65,18 @@ const createUser = async (req = request, res = response) => {
 const updateUser = async (req = request, res = response) => {
   try {
     const foundUser = await User.findById(req.params.id).exec();
-    if (!foundUser) return res.status(404).json({ message: "404 Not Found" });
+    if (!foundUser) return res.sendStatus(404);
 
     const { roles } = req.body;
-    if (!roles) return res.status(400).json({ message: "received empty body" });
+    if (!roles) return res.status(400).json({ message: "roles should be set" });
 
-    if (roles) {
-      foundUser.roles = getAllowedRoles(roles);
-    }
+    const allowedRoles = getAllowedRoles(roles);
+    if (allowedRoles.length === 0)
+      return res.status(400).json({ message: "invalid roles" });
 
+    foundUser.roles = allowedRoles;
     await foundUser.save();
+
     return res
       .status(200)
       .json({ message: `User ${foundUser.user} updated successfully` });
