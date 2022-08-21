@@ -32,7 +32,7 @@ router.use("/tickets", roleAcess([USER_ROLES.ADMIN]), ticketRoutes);
 
 // Special routes
 router.use(
-  "/user-profile",
+  "/my-profile",
   roleAcess([USER_ROLES.ADMIN, USER_ROLES.USER, USER_ROLES.STAFF]),
   profileRoutes
 );
