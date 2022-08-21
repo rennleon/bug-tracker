@@ -57,10 +57,10 @@ const updateUserTicket = async (req = request, res = response) => {
     }).exec();
     if (!foundTicket) return res.sendStatus(404);
 
-    if (!req.body?.content)
-      return res.status(400).json({ message: "content is required" });
+    if (!req.body?.content?.trim())
+      return res.status(400).json({ message: "content field is required" });
 
-    foundTicket.content = req.body.content;
+    foundTicket.content = req.body.content.trim();
     await foundTicket.save();
     res.status(200).json({
       message: `Ticket with id ${foundTicket._id} was updated successfully`,
