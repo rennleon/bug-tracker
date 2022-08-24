@@ -8,8 +8,14 @@ const USER_ROLES = require("../config/rolesConstants");
 const { getAllowedRoles } = require("../utils/userRoles");
 
 const getAllUsers = async (req = request, res = response) => {
+  const { page = 1, limit = 10, username = "" } = req.query;
+  const regex = new RegExp(username, "i");
+  const query = { _id: { $ne: req.user.id }, user: regex };
+  const options = { page, limit };
+
   try {
-    const users = await User.find({}).nor({ _id: req.user.id }).exec();
+    const users = await User.paginate(query, options);
+
     if (!users || users.length === 0) {
       return res.sendStatus(204);
     }
