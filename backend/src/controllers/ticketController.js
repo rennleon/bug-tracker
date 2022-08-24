@@ -2,8 +2,15 @@ const { request, response } = require("express");
 const Ticket = require("../models/Ticket");
 
 const getAllTickets = async (req = request, res = response) => {
+  const { page = 1, limit = 10, status = "", content = "" } = req.query;
+  const regex = new RegExp(content, "i");
+  const query = { content: regex };
+  const options = { page, limit };
+
+  if (status !== "") query.status = status;
+
   try {
-    const tickets = await Ticket.find({}).exec();
+    const tickets = await Ticket.paginate(query, options);
     if (!tickets || tickets.length === 0) {
       return res.sendStatus(204);
     }
