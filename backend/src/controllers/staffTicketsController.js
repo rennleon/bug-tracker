@@ -2,6 +2,22 @@ const { request, response } = require("express");
 const Ticket = require("../models/Ticket");
 const TICKET_STATUS = require("../config/ticketStatusConstants");
 
+const listUntakenTickets = async (req = request, res = response) => {
+  const { page = 1, limit = 10 } = req.query;
+  const query = { status: TICKET_STATUS.UNASSIGNED };
+  const options = { page, limit };
+
+  try {
+    const tickets = await Ticket.paginate(query, options);
+    if (!tickets || tickets.docs.length === 0) return res.sendStatus(204);
+
+    res.json(tickets);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+};
+
 const geSttaffTickets = async (req = request, res = response) => {
   const { page = 1, limit = 10, status = "" } = req.query;
   const query = { staffId: { $eq: req.user.id } };
@@ -77,6 +93,7 @@ const closeTicket = async (req = request, res = response) => {
 };
 
 module.exports = {
+  listUntakenTickets,
   geSttaffTickets,
   geSttaffTicketById,
   takeTicket,
