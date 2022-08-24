@@ -3,9 +3,15 @@ const Ticket = require("../models/Ticket");
 const TICKET_STATUS = require("../config/ticketStatusConstants");
 
 const geSttaffTickets = async (req = request, res = response) => {
+  const { page = 1, limit = 10, status = "" } = req.query;
+  const query = { staffId: { $eq: req.user.id } };
+  const options = { page, limit };
+
+  if (status !== "") query.status = status;
+
   try {
-    const tickets = await Ticket.find({ staffId: req.user.id }).exec();
-    if (!tickets || tickets.length === 0) return res.sendStatus(204);
+    const tickets = await Ticket.paginate(query, options);
+    if (!tickets || tickets.docs.length === 0) return res.sendStatus(204);
 
     res.json(tickets);
   } catch (err) {
