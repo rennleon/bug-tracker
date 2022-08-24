@@ -11,7 +11,7 @@ const getAllTickets = async (req = request, res = response) => {
 
   try {
     const tickets = await Ticket.paginate(query, options);
-    if (!tickets || tickets.length === 0) {
+    if (!tickets || tickets.docs.length === 0) {
       return res.sendStatus(204);
     }
     res.json(tickets);

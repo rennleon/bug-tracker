@@ -16,7 +16,7 @@ const getAllUsers = async (req = request, res = response) => {
   try {
     const users = await User.paginate(query, options);
 
-    if (!users || users.length === 0) {
+    if (!users || users.docs.length === 0) {
       return res.sendStatus(204);
     }
     res.json(users);
