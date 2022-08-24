@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const ticketSchema = new mongoose.Schema({
   userId: {
@@ -26,5 +27,7 @@ const ticketSchema = new mongoose.Schema({
     required: false,
   },
 });
+
+ticketSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Ticket", ticketSchema);
