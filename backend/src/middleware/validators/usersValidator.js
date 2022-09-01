@@ -15,8 +15,12 @@ const userUpdateValidator = validate([
   body("roles")
     .notEmpty()
     .withMessage("roles is required")
-    .isIn(Object.keys(USER_ROLES))
-    .withMessage("invalid role"),
+    .isArray()
+    .withMessage("roles must be an array")
+    .custom((roles = []) =>
+      roles.reduce((isValid, role) => isValid && USER_ROLES[role], true)
+    )
+    .withMessage("invalid roles"),
 ]);
 
 module.exports = { userCreateValidator, userUpdateValidator };
