@@ -41,8 +41,6 @@ const getUserTicketById = async (req = request, res = response) => {
 const createUserTicket = async (req = request, res = response) => {
   try {
     const { content } = req.body;
-    if (!content?.trim())
-      return res.status(400).json({ message: "content is required" });
 
     const newTicket = await Ticket.create({
       userId: req.user.id,
@@ -64,10 +62,9 @@ const updateUserTicket = async (req = request, res = response) => {
     }).exec();
     if (!foundTicket) return res.sendStatus(404);
 
-    if (!req.body?.content?.trim())
-      return res.status(400).json({ message: "content field is required" });
+    const { content } = req.body;
 
-    foundTicket.content = req.body.content.trim();
+    foundTicket.content = content;
     await foundTicket.save();
     res.status(200).json({
       message: `Ticket with id ${foundTicket._id} was updated successfully`,
