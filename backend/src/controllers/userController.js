@@ -43,25 +43,17 @@ const getUserById = async (req = request, res = response) => {
 
 const createUser = async (req = request, res = response) => {
   try {
-    const { user, password, roles = [USER_ROLES.USER] } = req.body;
-    if (!user?.trim() || !password?.trim())
-      return res
-        .status(400)
-        .json({ message: "user and password are both required" });
+    const { user, password, roles } = req.body;
 
     const foundUser = await User.findOne({ user }).exec();
     if (foundUser) return res.sendStatus(409);
-
-    const allowedRoles = getAllowedRoles(roles);
-    if (allowedRoles.length === 0)
-      return res.status(400).json({ message: "invalid roles" });
 
     const encrypted = await encrypt(password);
 
     const newUser = await User.create({
       user,
+      roles,
       password: encrypted,
-      roles: allowedRoles,
     });
     res.status(201).json(newUser);
   } catch (err) {
@@ -76,13 +68,6 @@ const updateUser = async (req = request, res = response) => {
 
     const foundUser = await User.findById(req.params.id).exec();
     if (!foundUser) return res.sendStatus(404);
-
-    const { roles } = req.body;
-    if (!roles) return res.status(400).json({ message: "roles should be set" });
-
-    const allowedRoles = getAllowedRoles(roles);
-    if (allowedRoles.length === 0)
-      return res.status(400).json({ message: "invalid roles" });
 
     foundUser.roles = allowedRoles;
     await foundUser.save();
