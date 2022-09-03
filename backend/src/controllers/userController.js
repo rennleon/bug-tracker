@@ -3,9 +3,6 @@ const { request, response } = require("express");
 const { encrypt } = require("../utils/encrypt");
 
 const User = require("../models/User");
-const USER_ROLES = require("../config/rolesConstants");
-
-const { getAllowedRoles } = require("../utils/userRoles");
 
 const getAllUsers = async (req = request, res = response) => {
   const { page = 1, limit = 10, username = "" } = req.query;
