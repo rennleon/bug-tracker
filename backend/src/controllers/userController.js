@@ -5,12 +5,12 @@ const { encrypt } = require("../utils/encrypt");
 const User = require("../models/User");
 
 const getAllUsers = async (req = request, res = response) => {
-  const { page = 1, limit = 10, username = "" } = req.query;
-  const regex = new RegExp(username, "i");
-  const query = { _id: { $ne: req.user.id }, user: regex };
-  const options = { page, limit };
-
   try {
+    const { page = 1, limit = 10, username = "" } = req.query;
+    const regex = new RegExp(username, "i");
+    const query = { _id: { $ne: req.user.id }, user: regex };
+    const options = { page, limit };
+
     const users = await User.paginate(query, options);
 
     if (!users || users.docs.length === 0) {
