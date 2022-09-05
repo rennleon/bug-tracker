@@ -4,21 +4,12 @@ const mongoose = require("mongoose");
 
 /** SETUP GLOBAL DB CONNECTION */
 before("Connect to DB", function (done) {
-  this.timeout(60_000);
-  console.log("Connecting to database");
-  console.time("dbConnTime");
-  mongoose.connect(process.env.DB_CONN_STR, () => {
-    console.timeEnd("dbConnTime");
-    done();
-  });
+  this.timeout(120_000);
+  mongoose.connect(process.env.TEST_DB_CONN_STR, done);
 });
 
 /** CLOSE GLOBAL DB CONNECTION */
 after("Close DB connection", function (done) {
-  console.log("Closing database connection");
-  console.time("dbDiconnectTime");
-  mongoose.connection.close(false, () => {
-    console.timeEnd("dbDiconnectTime");
-    done();
-  });
+  this.timeout(120_000);
+  mongoose.connection.close(false, done);
 });
