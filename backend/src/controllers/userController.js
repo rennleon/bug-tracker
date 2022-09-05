@@ -18,7 +18,6 @@ const getAllUsers = async (req = request, res = response) => {
     }
     res.json(users);
   } catch (err) {
-    console.error(err);
     res.sendStatus(500);
   }
 };
@@ -33,7 +32,6 @@ const getUserById = async (req = request, res = response) => {
     }
     res.json(user);
   } catch (err) {
-    console.error(err);
     res.sendStatus(500);
   }
 };
@@ -54,7 +52,6 @@ const createUser = async (req = request, res = response) => {
     });
     res.status(201).json(newUser);
   } catch (err) {
-    console.error(err);
     res.sendStatus(500);
   }
 };
@@ -71,7 +68,6 @@ const updateUser = async (req = request, res = response) => {
 
     return res.status(200).json(foundUser);
   } catch (err) {
-    console.error(err);
     res.sendStatus(500);
   }
 };
@@ -86,7 +82,6 @@ const deleteUser = async (req = request, res = response) => {
     await foundUser.delete();
     res.sendStatus(204);
   } catch (err) {
-    console.error(err);
     res.sendStatus(500);
   }
 };
