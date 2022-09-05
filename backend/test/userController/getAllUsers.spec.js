@@ -26,6 +26,11 @@ describe("getAllUsers", function () {
     });
   });
 
+  afterEach(() => {
+    res.json = sinon.spy();
+    res.sendStatus = sinon.spy();
+  });
+
   after("Remove injected user", function () {
     this.timeout(60_000);
 
@@ -121,7 +126,7 @@ describe("getAllUsers", function () {
       new Promise(async (resolve, reject) => {
         try {
           await getAllUsers(req, res);
-          const usersArr = res.json.getCall(-1).args[0].docs;
+          const usersArr = res.json.args[0][0].docs;
           assert.equal(typeof [], typeof usersArr);
           assert.equal(4, usersArr.length);
           resolve();
